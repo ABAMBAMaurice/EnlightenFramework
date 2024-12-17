@@ -41,10 +41,6 @@ $declared_classes_after = get_declared_classes();
 $new_pages = array_diff($declared_classes_after, $declared_classes_before);
 
 
-foreach (glob("Base_app/Codeunits/*.php") as $filename) {
-    require_once $filename;
-}
-/*
 if(isset($_GET['SystemUpdateSchema'])) {
     foreach ($new_pages as $object) {
         $base = Database::base();
@@ -60,6 +56,6 @@ if(isset($_GET['SystemUpdateSchema'])) {
         $view->Validate('SourceTableName', $o->rec->table_name);
         $view->Insert(true);
     }
-}*/
+}
 
 ?>
