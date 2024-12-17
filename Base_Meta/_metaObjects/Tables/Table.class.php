@@ -50,7 +50,6 @@
         }
         
         public function __get($name){
-
                 switch($name){
                     case 'table_id':
                        return $this->_id;
@@ -220,14 +219,24 @@
             else
                 return false;
         }
+
+        Public function Count(){
+            if($this->FindAll())
+                return count($this->_recordSet);
+            else
+                return 0;
+        }
         
         public function Insert($trigger=true){
-            $stringKey = md5(uniqid(rand(), true));
+            $this->loadTable();
+            $stringKey = '';
+            $slug = md5(uniqid(rand(), true));
             if(!empty($this->_keys)){
                 /*$this->testKeys();*/
 
                 foreach($this->_keys as $key){
                     $stringKey = $stringKey.$key->_value;
+                    $slug = $slug.$key->_value;
                 }
 
                 if($trigger == true){
@@ -237,7 +246,7 @@
                 if(!isset(Table::$_records[$this->_id][$stringKey])){
                     $this->Validate("created_at",date('Y-m-d H:m:s'));
                     $this->Validate("modified_at",date('Y-m-d H:m:s'));
-                    $this->Validate("Id_slug",$stringKey);
+                    $this->Validate("Id_slug",$slug);
                     $this->Validate("Id_Incr","");
                     Table::$_records[$this->_id][$stringKey] = $this;
                     $_SESSION['records'] = Table::$_records;
@@ -250,7 +259,7 @@
                         return array("status" => 201, "Message" => "Created", "result" => json_decode($this));
                     }
                 }else{
-                    return array("status" => 202, "Message" => "Duplicata pour la clé primaire dans la table '". $this->_name."'");
+                    return array("status" => 202, "Message" => "Duplicata pour la clé primaire '".$stringKey."' dans la table '". $this->_name."'");
                 }
             }else{
                 return array("status" => 206, "Message" => 'Vous devriez définir au moins une clé');
@@ -391,7 +400,8 @@
             $query = substr($query, 0,strlen($query)-1);
             $query .=') VALUES ( ';
             foreach ($this->_fields as $field) {
-                $query .= '"'.$field->_value.'",';
+                if($this->checkTableRelation($field, $field->_value))
+                    $query .= '"'.$field->_value.'",';
             }
             $query = substr($query, 0,strlen($query)-1). '
             ) ON DUPLICATE KEY UPDATE ';
@@ -477,6 +487,20 @@
             $r .= '}';
 
             return $r;
+        }
+
+        private function checkTableRelation($field, $value){
+            if($field->tableRelation != null){
+                $relationTable = $field->tableRelation;
+                $relationTable->setRange($relationTable->keysList[0]->_name, $value);
+                if($relationTable->FindFirst()){
+                    return true;
+                }else{
+                    Error("Contrainte de clé étrangère pour le champs '".$field->_name."'. La valeur '".$value."' n'existe pas, dans la table associée '".$relationTable->table_name."'. Record: ".$this->keys);
+                }
+            }else{
+                return true;
+            }
         }
 
     }
