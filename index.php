@@ -116,6 +116,21 @@ header('content-type:application/json');
     });
 //endregion
 
+//region Clients
+
+    App::route('GET','/Customers', function(){
+        echo CustomersController::getAllCustomers();
+    });
+
+    App::route('GET','/Customers/{code}', function($code){
+        echo CustomersController::getCustomer($code);
+    });
+
+    App::route('POST','/Customers', function(){
+        $data = json_decode(file_get_contents('php://input'), true);
+        echo CustomersController::Insert($data);
+    });
+
 //endregion
 
 
