@@ -1,7 +1,7 @@
 <?php
     class Vendor extends Table{
         public function __construct(){
-            parent::__construct(23, 'vendor');
+            parent::__construct(16, 'vendor');
 
             //Donnéees générales
             $this->field(

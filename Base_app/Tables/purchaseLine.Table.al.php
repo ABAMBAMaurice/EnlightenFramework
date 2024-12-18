@@ -5,7 +5,7 @@ use Cassandra\Value;
 class purchaseLine extends table {
         public function __construct()
         {
-            parent::__construct('81', 'purchaseline');
+            parent::__construct(14, 'purchaseline');
 
             $this->field(1,'Line_No',FieldType::Integer(), editable: false);
 

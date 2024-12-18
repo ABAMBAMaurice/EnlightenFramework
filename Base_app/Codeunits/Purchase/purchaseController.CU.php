@@ -25,29 +25,6 @@ class purchaseController{
         echo json_encode($result);
     }
 
-
-
-    /**
-     *
-     *  This function is Marked for removal
-
-        public static function getLastLineNo($type, $code){
-            $header = new purchaseHeader();
-            if($header->get($code, $type)){
-                $line = new purchaseLine();
-                $line->setRange('Document_type',$type);
-                $line->setRange('Document_No',$code);
-                if($line->FindLast())
-                    return json_encode(array("status" => 200, "Message" => "success", "warning" => "this method is marked for removal", "result" => $line->Line_No->value));
-                else
-                    return json_encode(array("status" => 200, "Message" => "success", "warning" => "this method is marked for removal", "result" => 0));
-            }else{
-                return json_encode(array("status" => 204, "Message" => "No result found for the Order No you've provided", "warning" => "this method is marked for removal"));
-            }
-        }
-    *
-    */
-
     //region Order
         public static function getOrder($code){
             $order = new purchaseOrder();

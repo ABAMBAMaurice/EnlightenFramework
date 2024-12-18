@@ -3,7 +3,7 @@ class Customer extends Table
 {
     public function __construct()
     {
-        parent::__construct(27, 'customer');
+        parent::__construct(5, 'customer');
 
 
         $this->field(1,'No',FieldType::text(30),

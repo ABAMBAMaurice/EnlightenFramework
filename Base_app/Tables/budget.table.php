@@ -2,7 +2,7 @@
     class Budget extends table
     {
         public function __construct(){
-            parent::__construct(2000007, "budget");
+            parent::__construct(1, "budget");
 
             $this->field(1,'Code', FieldType::text(30));
             $this->field(2,'Description', FieldType::text(100));

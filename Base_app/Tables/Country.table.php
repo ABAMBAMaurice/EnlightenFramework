@@ -1,7 +1,7 @@
 <?php
 class Country extends Table{
     public function __construct(){
-        parent::__construct(2000001,'country');
+        parent::__construct(4,'country');
 
         $this->field(1,'Code',FieldType::text(30));
         $this->field(2,'IsoCode',FieldType::text(10));

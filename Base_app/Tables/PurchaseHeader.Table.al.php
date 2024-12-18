@@ -4,7 +4,7 @@
 
         public function __construct()
         {
-            parent::__construct('80', 'purchaseheader');
+            parent::__construct(13, 'purchaseheader');
 
             $this->field(1,'No',FieldType::text(30));
             $this->field(2,'Document_type',FieldType::text(30), tableRelation: new PurchaseDocumentType());

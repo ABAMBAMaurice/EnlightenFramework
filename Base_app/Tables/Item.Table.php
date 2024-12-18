@@ -2,7 +2,7 @@
     class Item extends Table {
         public function __construct()
         {
-            parent::__construct('30', 'items');
+            parent::__construct(11, 'items');
 
             $this->field(1, 'No', FieldType::text(30),caption:'N°');
             $this->field(2, 'description', FieldType::text(150),caption:'Description');

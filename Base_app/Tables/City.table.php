@@ -1,7 +1,7 @@
 <?php
     class City extends Table {
         public function __construct(){
-            parent::__construct(2000003,'city');
+            parent::__construct(3,'city');
 
             $this->field(
                 id:1,

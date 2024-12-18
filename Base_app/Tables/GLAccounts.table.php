@@ -1,7 +1,7 @@
 <?php
     class GLAccounts extends Table {
         public function __construct(){
-            parent::__construct(2000004,'general_accounts');
+            parent::__construct(6,'general_accounts');
 
             $this->field(
                 id:1,
