@@ -3,7 +3,7 @@ class Customer extends Table
 {
     public function __construct()
     {
-        parent::__construct(27, 'customer');
+        parent::__construct(5, 'customer');
 
 
         $this->field(1,'No',FieldType::text(30),
@@ -81,6 +81,9 @@ class Customer extends Table
 
         $this->field(17, 'grpe_cpta_client', FieldType::text(30),
             tableRelation: new GrpeComptaClient(), caption: 'Grpe. Compta. Client'
+        );
+
+        $this->field(18, 'blocked', FieldType::boolean(), caption: 'Bloqué'
         );
 
         $this->Keys('No');

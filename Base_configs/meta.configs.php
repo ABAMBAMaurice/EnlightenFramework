@@ -55,6 +55,7 @@ if(isset($_GET['SystemUpdateSchema'])) {
             $view->Validate('SourceTableID', $o->rec->table_id);
         $view->Validate('SourceTableName', $o->rec->table_name);
         $view->Insert(true);
+
     }
 }
 

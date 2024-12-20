@@ -3,7 +3,7 @@
 class Views extends Table {
     public function __construct()
     {
-        parent::__construct('9999999', 'views');
+        parent::__construct(9999999, 'views');
 
         $this->field(1, 'Id', FieldType::text(30),caption:'N°');
         $this->field(2, 'className', FieldType::text(150, 'NOT NULL UNIQUE'),caption:'Nom classe');

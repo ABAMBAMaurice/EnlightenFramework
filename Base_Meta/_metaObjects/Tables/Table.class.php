@@ -68,7 +68,6 @@
                         break;
                     case 'keys':
                         $stringKey = '';
-                        //$this->testKeys();
                         foreach ($this->_keys as $key) {
                             $stringKey = $stringKey . $key->_value;
                         }
@@ -77,6 +76,8 @@
                     default:
                         if(isset($this->_fields[$name])){
                             return $this->_fields[$name];
+                        }else{
+                            Error("Le champs ".$name." n'existe pas dans la table ". $this->_name);
                         }
                         break;
                 }
@@ -415,7 +416,7 @@
         }
 
         public function MySQL_SelectQuery(){
-            $query = 'SELECT * FROM `'.$this->_name.'` WHERE `deleted_at` = "0000-00-00 00:00:00" ORDER BY `Id_Incr` ASC';
+            $query = 'SELECT * FROM `'.$this->_name.'` WHERE `deleted_at` = "0000-00-00 00:00:00" OR `deleted_at` = null ORDER BY `Id_Incr` ASC';
 
             return $query;
         }
