@@ -2,16 +2,16 @@
 
 use Cassandra\Value;
 
-class purchaseLine extends table {
+class SalesLine extends table {
         public function __construct()
         {
-            parent::__construct(14, 'purchaseline');
+            parent::__construct(14, 'saleline');
 
             $this->field(1,'Line_No',FieldType::Integer(), editable: false);
 
-            $this->field(2,'Document_No',FieldType::text(30), tableRelation: new purchaseHeader(), editable: false);
+            $this->field(2,'Document_No',FieldType::text(30), tableRelation: new SaleHeader(), editable: false);
 
-            $this->field(3,'Document_type',FieldType::text(30), editable: false, tableRelation: new PurchaseDocumentType());
+            $this->field(3,'Document_type', FieldType::text(30), editable: false, tableRelation: new SalesDocumentType());
 
             $this->field(4,'Item_No',FieldType::text(30), tableRelation: new Item(), onValidate: function(){
                 $item = new Item();
@@ -64,7 +64,7 @@ class purchaseLine extends table {
         }
 
         function getVATFormHeader(){
-            $header = new purchaseHeader();
+            $header = new SaleHeader();
             if($header->get($this->Document_No->value, $this->Document_type->value)){
                 if($this->VAT->value == 0 || $this->VAT->value == "")
                     return $header->VAT->value;
@@ -73,7 +73,7 @@ class purchaseLine extends table {
             }
         }
         function getDiscFormHeader(){
-            $header = new purchaseHeader();
+            $header = new SaleHeader();
             if($header->get($this->Document_No->value, $this->Document_type->value)){
                 if($this->Discount->value == 0 || $this->Discount->value == "")
                     return $header->discount->value;
@@ -83,7 +83,7 @@ class purchaseLine extends table {
         }
 
         function getLastLineNo(){
-            $line = new PurchaseLine();
+            $line = new SalesLine();
             $line->setRange('Document_type', $this->Document_type);
             $line->setRange('Document_No', $this->Document_No);
 

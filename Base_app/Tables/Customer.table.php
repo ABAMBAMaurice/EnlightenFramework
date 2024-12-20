@@ -83,6 +83,9 @@ class Customer extends Table
             tableRelation: new GrpeComptaClient(), caption: 'Grpe. Compta. Client'
         );
 
+        $this->field(18, 'blocked', FieldType::boolean(), caption: 'Bloqué'
+        );
+
         $this->Keys('No');
     }
 

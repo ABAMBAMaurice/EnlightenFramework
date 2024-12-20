@@ -1,10 +1,10 @@
 <?php
 
-class purchaseOrder extends Page{
+class saleOrder extends Page{
     public function __construct()
     {
-        parent::__construct('80', 'PurchaseOrder', PagesType::Document,'Commande achat');
-        $this->sourceTable = new purchaseHeader();
+        parent::__construct('90', 'SaleOrder', PagesType::Document,'Commande vente');
+        $this->sourceTable = new SaleHeader();
         $this->setActions();
         $this->layout();
     }
@@ -31,13 +31,12 @@ class purchaseOrder extends Page{
             new PageField('Release_date',$this->rec->Release_date, editable: true, enabled: true, caption: 'Date d échéance'),
             new PageField('discount', source: $this->rec->discount, editable: true, enabled: true, caption: 'Remise %'),
             new PageField('VAT',$this->rec->VAT, editable: true, enabled: true, caption: 'TVA %'),
-            new PageField('vendor_No',$this->rec->vendor_No, editable: true, enabled: true, caption: 'N° fournisseur'),
-            new PageField('vendor_Name',$this->rec->vendor_Name, editable: false, enabled: true, caption: 'Nom client'),
+            new PageField('customer_No',$this->rec->customer_No, editable: true, enabled: true, caption: 'N° fournisseur'),
+            new PageField('customer_Name',$this->rec->customer_Name, editable: false, enabled: true, caption: 'Nom client'),
         );
 
-        $this->part('81', array("Document_type" => "Document_type", "No" => "Document_No"));
+        $this->part('91', array("Document_type" => "Document_type", "No" => "Document_No"));
     }
-
 
 }
 ?>
