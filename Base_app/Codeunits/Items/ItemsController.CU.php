@@ -2,7 +2,7 @@
 
 class ItemsController{
     public static function getAllItems(){
-            $items = new ItemList();
+            $items = new Items();
             if ($items->rec->FindAll()) {
                 echo json_encode(array("status" => 200, "message" => "success", "result" => json_decode($items)));
             }else{

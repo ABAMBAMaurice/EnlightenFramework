@@ -2,7 +2,7 @@
 
 class CustomersController {
     public static function getAllCustomers() {
-        $customers = new CustomerList();
+        $customers = new Customers();
         if($customers->rec->FindAll()) {
             echo json_encode(array("status" => 200, "message" => "success", "result" => json_decode($customers)));
         }else{

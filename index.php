@@ -11,11 +11,12 @@ header('content-type:application/json');
 /***
  *  Route pour index
  */
+
     App::route('GET', '/', function(){
         echo(json_encode(array("status"=>200, "Message" => "Welcome to enlighten")));
     });
 
-//region gestion des pages
+    //region gestion des pages
     App::route('GET', '/Page/{id}', function($id){
         echo PagesController::getPage($id);
     });
@@ -145,15 +146,15 @@ header('content-type:application/json');
 
     //region Clients
 
-        App::route('GET','/Customers', function(){
+        App::route('GET','/customers', function(){
             echo CustomersController::getAllCustomers();
         });
 
-        App::route('GET','/Customers/{code}', function($code){
+        App::route('GET','/customers/{code}', function($code){
             echo CustomersController::getCustomer($code);
         });
 
-        App::route('POST','/Customers', function(){
+        App::route('POST','/customers', function(){
             $data = json_decode(file_get_contents('php://input'), true);
             echo CustomersController::Insert($data);
         });
@@ -162,10 +163,46 @@ header('content-type:application/json');
 
     //region Comptabilité
 
-        //region planComptables
+        //region Currencies
+            App::route('GET','/currencies', function(){
+                echo currencyController::getAllCurrencies();
+            });
 
+            App::route('GET','/currencies/{code}', function($code){
+                echo currencyController::getCurrency($code);
+            });
+
+            App::route('POST','/currencies', function(){
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo currencyController::InsertCurrency($data);
+            });
         //endregion
 
+        //region planComptables
+
+            App::route('POST','/accounting/general/accounts', function(){
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo generalAccountsController::InsertAccount($data);
+            });
+
+            App::route('GET','/accounting/general/accounts', function(){
+                echo generalAccountsController::getAccounts();
+            });
+
+            App::route('GET','/accounting/general/accounts/{code}', function($code){
+                echo generalAccountsController::getAccount($code);
+            });
+
+            App::route('DELETE','/accounting/general/accounts/{code}', function($code){
+                echo generalAccountsController::deleteAccount($code);
+            });
+
+            App::route('PATCH','/accounting/general/accounts/{code}', function($code){
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo generalAccountsController::updateAccount($code, $data);
+            });
+
+        //endregion
 
         //region Groupe compta
             //region client
@@ -183,6 +220,11 @@ header('content-type:application/json');
 
                 App::route('DELETE','/accounting/customers/groups/{code}', function($code){
                     echo PostingGroupsController::deleteCustomerPostingGroup($code);
+                });
+
+                App::route('PATCH','/accounting/customers/groups/{code}', function($code){
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo PostingGroupsController::UpdateCustomerPostingGroup($code, $data);
                 });
             //endregion
 
@@ -202,14 +244,120 @@ header('content-type:application/json');
                 App::route('DELETE','/accounting/vendors/groups/{code}', function($code){
                     echo PostingGroupsController::deleteVendorPostingGroup($code);
                 });
+
+                App::route('PATCH','/accounting/vendors/groups/{code}', function($code){
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo PostingGroupsController::updateVendorPostingGroup($code, $data);
+                });
             //endregion
 
+            //region Produits
+                App::route('GET','/accounting/items/groups', function(){
+                    echo PostingGroupsController::getProductPostingGroups();
+                });
 
+                App::route('GET','/accounting/items/groups/{code}', function($code){
+                    echo PostingGroupsController::getProductPostingGroup($code);
+                });
+
+                App::route('POST','/accounting/items/groups', function(){
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo PostingGroupsController::InsertProductPostingGroup($data);
+                });
+
+                App::route('DELETE','/accounting/items/groups/{code}', function($code){
+                    echo PostingGroupsController::deleteProductPostingGroup($code);
+                });
+
+                App::route('PATCH','/accounting/items/groups/{code}', function($code){
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo PostingGroupsController::updateProductPostingGroup($code, $data);
+                });
+            //endregion
+
+            //region Marché
+                App::route('POST','/accounting/marche/groups', function(){
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo PostingGroupsController::InsertGenBusPostingGroup($data);
+                });
+
+                App::route('DELETE','/accounting/marche/groups/{code}', function($code){
+                    echo PostingGroupsController::deleteGenBusPostingGroup($code);
+                });
+
+                App::route('GET','/accounting/marche/groups/{code}', function($code){
+                    echo PostingGroupsController::getGenBusPostingGroup($code);
+                });
+
+                App::route('GET','/accounting/marche/groups', function(){
+                    echo PostingGroupsController::getGenBusPostingGroups();
+                });
+
+                App::route('PATCH','/accounting/marche/groups/{code}', function($code){
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo PostingGroupsController::UpdateGenBusPostingGroup($code, $data);
+                });
+            //endregion
 
         //endregion
 
-        //region paramètres compta
+        //region Groupe Compta Marche TVA
+            App::route('GET','/accounting/tva/marche/groups', function(){
+                echo PostingGroupsController::getAllGrpeComptaMarcheTVA();
+            });
+
+            App::route('GET','/accounting/tva/marche/groups/{code}', function($code){
+                echo PostingGroupsController::getGrpeComptaMarcheTVA($code);
+            });
+
+            App::route('POST','/accounting/tva/marche/groups', function(){
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo PostingGroupsController::InsertGrpeComptaMarcheTVA($data);
+            });
+
+            App::route('DELETE','/accounting/tva/marche/groups/{code}', function($code){
+                echo PostingGroupsController::deleteGrpeComptaMarcheTVA($code);
+            });
         //endregion
+
+        //region Grpe compta Produit TVA
+            App::route('GET','/accounting/tva/produit/groups', function(){
+                echo PostingGroupsController::getAllGrpeComptaProduitTVA();
+            });
+
+            App::route('GET','/accounting/tva/produit/groups/{code}', function($code){
+                echo PostingGroupsController::getGrpeComptaProduitTVA($code);
+            });
+
+            App::route('POST','/accounting/tva/produit/groups', function(){
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo PostingGroupsController::InsertGrpeComptaProduitTVA($data);
+            });
+
+            App::route('DELETE','/accounting/tva/produit/groups/{code}', function($code){
+                echo PostingGroupsController::deleteGrpeComptaProduitTVA($code);
+            });
+        //endregion
+
+        //region Grpe comptabilisation
+            App::route('GET','/accounting/posting/setup', function(){
+                echo GenPostingSetupController::getAllGenPostingSetup();
+            });
+
+            App::route('GET','/accounting/posting/setup/{marche}/{produit}', function($marche, $produit){
+                echo GenPostingSetupController::getGenPostingSetup($marche, $produit);
+            });
+
+            App::route('DELETE','/accounting/posting/setup/{marche}/{produit}', function($marche, $produit){
+                echo GenPostingSetupController::deleteGenPostingSetup($marche, $produit);
+            });
+
+            App::route('POST','/accounting/posting/setup', function(){
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo GenPostingSetupController::InsertGenPostingSetup($data);
+            });
+
+//endregion
 
         //region ecritures compta
         //endregion

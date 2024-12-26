@@ -4,7 +4,7 @@
     {
         public static function getAllCountries()
         {
-            $countries = new CountryList();
+            $countries = new Countries();
             if ($countries->rec->FindAll()) {
                 echo json_encode(array("status" => 200, "message" => "success", "result" => json_decode($countries)));
             }else{
@@ -13,7 +13,7 @@
         }
 
         public static function getCountry($code){
-            $countries = new CountryList();
+            $countries = new Countries();
             if($countries->rec->get($code)){
                 echo json_encode(array("status" => 200, "message" => "success", "result" => json_decode($countries)));
             }else{

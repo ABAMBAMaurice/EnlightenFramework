@@ -12,7 +12,7 @@ class VendorController {
 
     }
     public static function getVendor($code){
-        $vendor = new Vendor_Card();
+        $vendor = new VendorCard();
         if($vendor->rec->get($code)){
             echo json_encode(array("status" => 200, "message" => "success", "result" => json_decode($vendor)));
         }else{

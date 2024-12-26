@@ -210,6 +210,7 @@
             } else
                 return false ;
         }
+
         public function FindAll()
         {
             $this->loadTable();
@@ -245,10 +246,18 @@
                 }
 
                 if(!isset(Table::$_records[$this->_id][$stringKey])){
-                    $this->Validate("created_at",date('Y-m-d H:m:s'));
-                    $this->Validate("modified_at",date('Y-m-d H:m:s'));
-                    $this->Validate("Id_slug",$slug);
-                    $this->Validate("Id_Incr","");
+                    if(IsNullOrEmptyString($this->created_at->value))
+                        $this->Validate("created_at",date('Y-m-d H:m:s'));
+
+                    //if(IsNullOrEmptyString($this->modified_at->value))
+                        $this->Validate("modified_at",date('Y-m-d H:m:s'));
+
+                    if(IsNullOrEmptyString($this->Id_slug->value))
+                        $this->Validate("Id_slug",$slug);
+
+                    if(IsNullOrEmptyString($this->Id_Incr->value))
+                        $this->Validate("Id_Incr","");
+
                     Table::$_records[$this->_id][$stringKey] = $this;
                     $_SESSION['records'] = Table::$_records;
                     $Insert = App::base();
@@ -294,7 +303,7 @@
                     if($modify->getError()[1] != 0)
                         Error("Erreur SQL N°: ".$modify->getError()[1]."<br>Message: ".$modify->getError()[2]);
 
-                    return $modify;
+                return array("status" => 201, "Message" => "Modified", "result" => json_decode($this));
                 /*} else {
                     return false;
                 }*/
@@ -331,8 +340,7 @@
         
         public function onDelete(){}
         
-        public function onModify(){
-        }
+        public function onModify(){}
         
         public function onRename(){}
 
@@ -382,6 +390,7 @@
 
             return $query;
         }
+
         public function MySQL_UpdateSchema(){
             $query = 'ALTER TABLE `'.$this->_name.'` ';
             foreach ($this->_fields as $field) {
@@ -393,6 +402,7 @@
 
             return $query;
         }
+
         public function MySQL_InsertQuery(){
             $query = 'INSERT INTO `'.$this->_name.'`( ';
             foreach ($this->_fields as $field) {
@@ -436,7 +446,8 @@
             foreach ($this->_fields as $field) {
                 //if($field->_value != null) {
                     if($field->_value != '') {
-                        $query .= $field->_name . '="' . $field->_value . '",';
+                        if($this->checkTableRelation($field, $field->_value))
+                            $query .= $field->_name . '="' . $field->_value . '",';
                     }
                 //}
             }
@@ -450,6 +461,7 @@
 
             return $query;
         }
+
         public function loadTable(){
             Table::$_records[$this->_id] = array();
             $this->_recordSet = array();
