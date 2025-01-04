@@ -14,6 +14,7 @@
             $this->field(9, 'GrpeComptaProduit', FieldType::text(30), tableRelation: new grpecompaproduit(), caption: 'Groupe compta. produits');
             $this->field(10, 'Images', FieldType::text(250), caption: 'Image');
             $this->field(11, 'Stock', FieldType::decimal(), caption: 'Stock');
+            $this->field(12, 'Type', FieldType::text(30), caption: 'Type');
 
             $this->Keys('No');
         }

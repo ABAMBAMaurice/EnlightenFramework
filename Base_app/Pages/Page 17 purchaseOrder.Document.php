@@ -35,7 +35,7 @@ class purchaseOrder extends Page{
             new PageField('vendor_Name',$this->rec->vendor_Name, editable: false, enabled: true, caption: 'Nom client'),
         );
 
-        $this->part('81', array("Document_type" => "Document_type", "No" => "Document_No"));
+        $this->part('18', array("Document_type" => "Document_type", "No" => "Document_No"));
     }
 
 

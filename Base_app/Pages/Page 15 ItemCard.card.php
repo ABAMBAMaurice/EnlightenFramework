@@ -59,15 +59,15 @@
             );
 
             $this->group('Stockage', 'Stockage',
-                new PageField('unite', $this->rec->unite, onValidate: function (){
-                    $unit = new Unite();
-                    if($unit->get($this->rec->unite)){
-                        $this->Validate('desc_unite', $unit->Description);
-                    }
-                }, editable: true, caption: 'Unité'),
-                new PageField('desc_unite', $this->rec->desc_unite, editable: false, caption: 'Description unité'),
-                new PageField('Stock', $this->rec->Stock, editable: false, caption: 'Stock'),
-
+                new PageField('Type', $this->rec->Type, editable: true, caption: 'Type'),
+                        new PageField('unite', $this->rec->unite, onValidate: function (){
+                            $unit = new Unite();
+                            if($unit->get($this->rec->unite)){
+                                $this->Validate('desc_unite', $unit->Description);
+                            }
+                        }, editable: true, caption: 'Unité'),
+                        new PageField('desc_unite', $this->rec->desc_unite, editable: false, caption: 'Description unité'),
+                        new PageField('Stock', $this->rec->Stock, editable: false, caption: 'Stock'),
             );
             $this->group('Settings', 'Parametrages',
                 new PageField('GrpeComptaProduit', $this->rec->GrpeComptaProduit, editable: true, caption: 'Groupe compta. produit')

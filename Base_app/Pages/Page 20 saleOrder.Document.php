@@ -35,7 +35,7 @@ class saleOrder extends Page{
             new PageField('customer_Name',$this->rec->customer_Name, editable: false, enabled: true, caption: 'Nom client'),
         );
 
-        $this->part('91', array("Document_type" => "Document_type", "No" => "Document_No"));
+        $this->part('21', array("Document_type" => "Document_type", "No" => "Document_No"));
     }
 
 }

@@ -29,6 +29,7 @@ class SaleOrderSubForm  extends Page{
             new PageField('Item_description2',$this->rec->Item_description2, editable: true, enabled: true),
             new PageField('Unit_price',$this->rec->Unit_price, editable: true, enabled: true),
             new PageField('Qty',$this->rec->Qty, editable: true, enabled: true),
+            new PageField('Code_magasin',$this->rec->Code_magasin, editable: true, enabled: true),
             new PageField('Amount',$this->rec->Amount, editable: true, enabled: true),
             new PageField('Discount',$this->rec->Discount, editable: true, enabled: true),
             new PageField('Discount_amount',$this->rec->Discount_amount, editable: true, enabled: true),

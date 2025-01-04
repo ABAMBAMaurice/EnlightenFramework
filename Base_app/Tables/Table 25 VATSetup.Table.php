@@ -4,7 +4,7 @@ class VATSetup extends Table
 {
     public function __construct()
     {
-        parent::__construct(25, 'VATSetup');
+        parent::__construct(25, 'vatsetup');
 
         $this->field(1,'Grpe_compta_marche_tva', FieldType::date(),tableRelation: new GrpeCompaMarcheTVA(),caption:'Groupe compta marché');
         $this->field(2,'Grpe_compa_produit_tva', FieldType::date(),tableRelation: new GrpeCompaProduitTVA(),caption:'Groupe compta produit');

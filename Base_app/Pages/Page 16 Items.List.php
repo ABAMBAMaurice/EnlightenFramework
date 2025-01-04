@@ -32,8 +32,9 @@
         {
             $this->repeater('ListeItems', 'Liste articles',
                 new PageField('No', $this->rec->No, caption: 'N°'),
-                new PageField('Description', $this->rec->description),
-                new PageField(name: 'desc_categ', source: $this->rec->desc_categ, caption: 'description catégorie'),
+                new PageField('Description', $this->rec->description, caption:'Description'),
+                new PageField('Type', $this->rec->Type, caption:'Type'),
+                new PageField(name: 'desc_categ', source: $this->rec->desc_categ, caption: 'Description catégorie'),
                 new PageField(name: 'desc_unite', source: $this->rec->desc_unite, caption: 'Description unite'),
                 new PageField('Stock', $this->rec->Stock, caption: 'Stock'),
             );

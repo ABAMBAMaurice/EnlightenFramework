@@ -377,6 +377,8 @@
         }
 
         public function MySQL_CreateQuery(){
+            if(count($this->_keys)<=0)
+                Error("Vous devez définir au moins une clé primaire pour la table '".$this->_name."'");
             $query = 'CREATE TABLE IF NOT EXISTS `'.$this->_name.'` ( ';
             foreach ($this->_fields as $field) {
                 $query .= '`'.$field->_name.'` '.$field->_type.',';
@@ -504,13 +506,17 @@
 
         private function checkTableRelation($field, $value){
             if($field->tableRelation != null){
-                $relationTable = $field->tableRelation;
-                $relationTable->setRange($relationTable->keysList[0]->_name, $value);
-                if($relationTable->FindFirst()){
-                    return true;
+                if($value !== null || $value !== ''){
+                    $relationTable = $field->tableRelation;
+                    $relationTable->setRange($relationTable->keysList[0]->_name, $value);
+                    if($relationTable->FindFirst()){
+                        return true;
+                    }else{
+                        Error("Contrainte de clé étrangère pour le champs '".$field->_name."'. La valeur '".$value."' n'existe pas, dans la table associée '".$relationTable->table_name."'. Record: ".$this->keys);
+                    }
                 }else{
-                    Error("Contrainte de clé étrangère pour le champs '".$field->_name."'. La valeur '".$value."' n'existe pas, dans la table associée '".$relationTable->table_name."'. Record: ".$this->keys);
-                }
+                    return true;
+                }            
             }else{
                 return true;
             }

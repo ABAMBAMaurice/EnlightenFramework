@@ -18,7 +18,7 @@ if(isset($_GET['SystemUpdateSchema'])) {
         if (!$base->table_exists($t->table_name)) {
             $e = $base->executeQuery($t->MySQL_CreateQuery());
             if($base->getError()[0]>0){
-                echo Error($base->getError()[2]);
+                echo Error($base->getError()[2].'. Error on table Table: '.$t->table_name);
             }
         } else {
             $e = $base->executeQuery($t->MySQL_UpdateSchema());

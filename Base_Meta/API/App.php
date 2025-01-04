@@ -11,16 +11,38 @@ class App{
         // Convertir le chemin prévu (path) en expression régulière
         $pathRegex = "@^" . preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([^/]+)', $path ) . "$@";
 
-        if(preg_match($pathRegex, $currentPath, $matches)) {
-            if ($method === $currentMethod) {
-                array_shift($matches);
-                $callback(...$matches);
-                exit;
+        if ($method === $currentMethod) {
+            if (preg_match($pathRegex, $currentPath, $matches)) {
+                    array_shift($matches);
+                    $callback(...$matches);
+                    exit;
             }
         }
     }
 
     public static function base(){
         return Database::base();
+    }
+
+
+    public static function Insert($Recref, $data){
+        $rec = new $Recref();
+        foreach ($data as $key => $value) {
+            $rec->Validate($key, $value);
+        }
+        $result = $rec->Insert();
+
+        echo json_encode($result);
+
+    }
+    public static function Delete($Recref, ...$code){
+        $rec = new $Recref();
+        foreach ($data as $key => $value) {
+            $rec->Validate($key, $value);
+        }
+        $result = $rec->Insert();
+
+        echo json_encode($result);
+
     }
 }
