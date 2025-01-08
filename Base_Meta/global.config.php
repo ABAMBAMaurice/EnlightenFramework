@@ -22,6 +22,20 @@ function Message($message){
     return $message;
 }
 
+function IsNullOrEmptyString(string|null $str){
+    return $str === null || trim($str) === '';
+}
+
+function OneIsNullOrEmptyString(string|null ...$str){
+    $isNull = false;
+    foreach ($str as $value) {
+        if($value === null || trim($value) === ''){
+            $isNull = true;
+        }
+    }
+    return $isNull;
+}
+
 
 function Confirm($message){
     echo "<div class='alert alert-success'>".$message."</div>";

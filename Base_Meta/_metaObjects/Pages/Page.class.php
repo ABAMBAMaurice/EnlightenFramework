@@ -246,7 +246,7 @@
          */
         public static function open($Pageid)
         {
-            header("location:/Page/".$Pageid);
+            return Page::$_pageCollection[$Pageid];
         }
 
         /**
