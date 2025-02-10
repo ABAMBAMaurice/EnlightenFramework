@@ -1,5 +1,4 @@
 <?php
-
 class saleOrders extends Page {
     public function __construct()
     {
@@ -8,12 +7,9 @@ class saleOrders extends Page {
         $this->setAction();
         $this->layout();
     }
-
-
     function setAction(){
 
     }
-
     function layout()
     {
         $this->repeater('SalesOrdersList','Liste des commandes ventes',
@@ -27,8 +23,6 @@ class saleOrders extends Page {
             new PageField(name: 'FT_Amount', source: $this->rec->FT_Amount, caption: 'Montant TTC'),
         );
     }
-
-
     function OnAfterGetRecord(Table &$record)
     {
         $Amount = 0;

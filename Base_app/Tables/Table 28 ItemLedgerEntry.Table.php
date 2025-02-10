@@ -9,9 +9,10 @@
             $this->field(3,'Entry_Type', FieldType::text(30), caption: 'Type écriture');
             $this->field(4,'document_type', FieldType::text(30),caption:'Type de document');
             $this->field(5,'document_No', FieldType::text(30), caption: 'N° de document');
-            $this->field(6,'Quantite', FieldType::decimal(), caption: 'Quantité');
-            $this->field(7,'Code_magasin', FieldType::text(30),tableRelation: new Magasin(), caption: 'Code magasin');
-            $this->field(8,'description_magasin', FieldType::text(30), caption: 'Description magasin');
+            $this->field(6,'Item_No', FieldType::text(30),tableRelation: new Item(), caption: 'N° article');
+            $this->field(7,'Quantite', FieldType::decimal(), caption: 'Quantité');
+            $this->field(8,'Code_magasin', FieldType::text(30),tableRelation: new Magasin(), caption: 'Code magasin');
+            $this->field(9,'description_magasin', FieldType::text(30), caption: 'Description magasin');
 
             $this->Keys('Entry_No');
         }

@@ -14,6 +14,8 @@
 
         public static $_tableCollection = array();
 
+        private $_rangeSetted = false;
+
         
         public function __construct($id, $name){
             $this->_id = $id;
@@ -128,16 +130,19 @@
         }
         
         public function setRange($field, $value){
-            $this->loadTable();
-            if(empty($this->_recordSet)) {
+            if(!$this->_rangeSetted) {
+                $this->loadTable();
                 $records = Table::$_records[$this->_id];
                 $this->_recordSet = array();
 
                 foreach ($records as $record) {
-                    if ($record->_fields[$field]->_value == $value)
+                    if ($record->_fields[$field]->_value == $value) {
                         array_push($this->_recordSet, $record);
+                    }
                 }
-            }else{
+                $this->_rangeSetted = true;
+            }
+            if(!empty($this->_recordSet)) {
                 $records = $this->_recordSet;
                 $this->_recordSet = array();
                 foreach ($records as $record) {

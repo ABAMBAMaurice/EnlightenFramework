@@ -14,7 +14,7 @@ header('content-type:application/json');
 
 $currentMethod = $_SERVER['REQUEST_METHOD'];
 $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$currentPath = str_replace('/enlighten', '', $currentPath);
+$currentPath = str_replace('/Enlighten', '', $currentPath);
 $pathRegex = "@^" . preg_replace('/([a-zA-Z0-9_]+)/', '([^/]+)', $currentPath ) . "$@";
 $recRef = '';
 
@@ -28,7 +28,7 @@ if(preg_match($pathRegex, $currentPath, $matches)) {
     $view->setRange('className', $recRef);
     if($view->FindFirst()) {
         $page = new $recRef();
-        if ('SELECT' === $currentMethod) {
+        if ('GET' === $currentMethod) {
             array_shift($matches);
             if (count($matches) <= 0) {
                 if ($page->rec->FindAll())
@@ -41,7 +41,7 @@ if(preg_match($pathRegex, $currentPath, $matches)) {
                 else
                     echo json_encode(array("status" => 204, "message" => "No results found", "result" => json_decode($page)));
             }
-        }else if('INSERT' == $currentMethod){
+        }else if('POST' == $currentMethod){
             $data = json_decode(file_get_contents('php://input'), true);
             App::Insert($page->rec, $data);
         }else if('DELETE' == $currentMethod){
@@ -55,7 +55,7 @@ if(preg_match($pathRegex, $currentPath, $matches)) {
             }else{
                 Error('Veuillez définir la (les) valeur(s) de la (des) clé(s) pour la table '.$page->rec->table_name.'.');
             }
-        }else if('UPDATE' == $currentMethod){
+        }else if('PUT' == $currentMethod){
             $data = json_decode(file_get_contents('php://input'), true);
             array_shift($matches);
             if (count($matches) > 0) {
