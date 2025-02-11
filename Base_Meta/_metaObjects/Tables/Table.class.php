@@ -14,8 +14,13 @@
 
         public static $_tableCollection = array();
 
+        private $_rangeSetted = false;
+
+        private $_filter='';
+
         
         public function __construct($id, $name){
+            $this->_filter = '';
             $this->_id = $id;
             $this->_name = $name;
 
@@ -101,7 +106,7 @@
         
         public function Validate($field, $value){
             if(isset($this->_fields[$field])) {
-                $this->_fields[$field]->_value = $value;
+                    $this->_fields[$field]->_value = $value;
                 $this->_fields[$field]->onValidate();
                 return true;
             }else{
@@ -126,18 +131,37 @@
                 Error('Nombre de clé(s) incorrect. Vous devirez avoir \''. count($this->_keys).'\' clé(s) pour la table \''. $this->_name.'\'');
             }
         }
-        
+
+
+        public function setFilter($field,$pattern,...$values){
+            if(isset($this->_fields[$field])) {
+                $s = $pattern;
+
+                for ($i = 0; $i < count($values); $i++) {
+                    $s = preg_replace('[%[' . ($i + 1) . ']]', " '" . $values[$i] . "' ", $s);
+                }
+                $s = str_replace("|", " OR " . $this->_fields[$field]->_name . " ", $s);
+                $s = str_replace("&", " AND " . $this->_fields[$field]->_name . " ", $s);
+                return $this->_filter .= ' AND (' . ($this->_fields[$field]->_name . " " . $s) . ')';
+            }else{
+                Error('Le champ '.$field.' n\'existe pas dans la table '. $this->_name);
+            }
+        }
+
         public function setRange($field, $value){
-            $this->loadTable();
-            if(empty($this->_recordSet)) {
+            if(!$this->_rangeSetted) {
+                $this->loadTable();
                 $records = Table::$_records[$this->_id];
                 $this->_recordSet = array();
 
                 foreach ($records as $record) {
-                    if ($record->_fields[$field]->_value == $value)
+                    if ($record->_fields[$field]->_value == $value) {
                         array_push($this->_recordSet, $record);
+                    }
                 }
-            }else{
+                $this->_rangeSetted = true;
+            }
+            if(!empty($this->_recordSet)) {
                 $records = $this->_recordSet;
                 $this->_recordSet = array();
                 foreach ($records as $record) {
@@ -148,23 +172,11 @@
         }
 
         public function Find(){
-            $this->loadTable();
-            $stringKey = '';
-            if(!empty($this->_keys)) {
-                $this->testKeys();
-
-                foreach ($this->_keys as $key) {
-                    $stringKey = $stringKey . $key->_value;
-                }
-
-                if(isset(Table::$_records[$this->_id][$stringKey])){
-                        $this->copyRecord(Table::$_records[$this->_id][$stringKey]);
-                    return Table::$_records[$this->_id][$stringKey];
-                }else
-                    return false;
-            }else
-                return false;
-
+           if($this->_filter == '')
+               Error('Aucun filtre n\'est définit. Vous ne pouvez pas utiliser la foncition Find(). Si vous avez utilisé un SetRange(), utilisez plustôt un FindSet().');
+            else {
+               return $this->FindAll();
+            }
         }
 
         public function Exists(){
@@ -428,7 +440,7 @@
         }
 
         public function MySQL_SelectQuery(){
-            $query = 'SELECT * FROM `'.$this->_name.'` WHERE `deleted_at` = "0000-00-00 00:00:00" OR `deleted_at` = null ORDER BY `Id_Incr` ASC';
+            $query = 'SELECT * FROM `'.$this->_name.'` WHERE (`deleted_at` = "0000-00-00 00:00:00" OR `deleted_at` = null) '.$this->_filter.' ORDER BY `Id_Incr` ASC';
 
             return $query;
         }

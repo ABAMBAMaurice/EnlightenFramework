@@ -20,6 +20,7 @@
         private $_groups = array();
         private $subPage = '{}';
         private $subPageLinks = array();
+        private $_bodyHTML = '';
 
 
         public function __construct($id, $name, $type, $caption = ''){
@@ -220,6 +221,9 @@
                     break;
                 case 'pageFieldLink':
                     return $this->_pageFieldLink;
+                    break;
+                case 'html':
+                    return $this->_bodyHTML;
                     break;
 
                 default:
